@@ -6,7 +6,7 @@ defmodule RepoTracker.Providers do
   @type repo :: String.t()
   @type owner :: String.t()
   @type login :: String.t()
-  @type providers :: :github
+  @type provider :: :github
   @type error :: %{message: String.t(), code: non_neg_integer()}
 
   alias RepoTracker.Providers.ContributorResponse
