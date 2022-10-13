@@ -64,7 +64,7 @@ defmodule RepoTracker.Providers.GithubImpl do
     %IssueResponse{title: title, login: login, labels: labels}
   end
 
-  defp apply_contributor_response(%{"contribuitions" => contribuitions, "login" => login}) do
+  defp apply_contributor_response(%{"contributions" => contribuitions, "login" => login}) do
     %ContributorResponse{login: login, commits_quantity: contribuitions}
   end
 
