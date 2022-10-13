@@ -6,13 +6,17 @@ defmodule RepoTracker.Providers do
   @type repo :: String.t()
   @type owner :: String.t()
   @type providers :: [:github]
+  @type error :: %{message: String.t(), code: non_neg_integer()}
 
-  @spec list_issues(providers(), owner(), repo()) :: [Providers.Issue.t()]
+  alias RepoTracker.Providers.IssueResponse
+  alias RepoTracker.Providers.GithubImpl
+
+  @spec list_issues(providers(), owner(), repo()) :: {:ok, [IssueResponse.t()]} | {:error, error()}
   def list_issues(provider, owner, repo) do
-    impl(provider).list(owner, repo)
+    impl(provider).list_issues(owner, repo)
   end
 
   defp impl(:github) do
-
+    GithubImpl
   end
 end
