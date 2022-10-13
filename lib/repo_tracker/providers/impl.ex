@@ -4,6 +4,8 @@ defmodule RepoTracker.Providers.Impl do
   """
 
   alias RepoTracker.Providers
+  alias RepoTracker.Providers.IssueResponse
 
-  @callback list_issues(Providers.owner(), Providers.repo()) :: [Tentacat.response()]
+  @callback list_issues(Providers.owner(), Providers.repo()) ::
+              {:ok, [IssueResponse.t()]} | {:error, Providers.error()}
 end
