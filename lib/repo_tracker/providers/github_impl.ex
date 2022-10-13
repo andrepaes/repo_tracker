@@ -12,7 +12,7 @@ defmodule RepoTracker.Providers.GithubImpl do
   def list_issues(owner, repo) do
     case Tentacat.Issues.list(owner, repo) do
       {200, issues, _resp_headers} ->
-        {:ok, apply_issue_response(issues)}
+        {:ok, Enum.map(issues, &apply_issue_response/1)}
 
       {code, %{"message" => message}, _resp_headers} ->
         Logger.error(
@@ -23,7 +23,13 @@ defmodule RepoTracker.Providers.GithubImpl do
     end
   end
 
-  defp apply_issue_response(%{"title" => title, "author" => author, "labels" => labels}) do
+  defp apply_issue_response(%{
+         "title" => title,
+         "user" => user,
+         "labels" => labels
+       }) do
+    labels = Enum.map(labels, fn %{"name" => name} -> name end)
+    author = Map.get(user, "login", nil)
     %IssueResponse{title: title, author: author, labels: labels}
   end
 end
