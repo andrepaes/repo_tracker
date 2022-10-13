@@ -18,9 +18,15 @@ defmodule RepoTracker.Providers do
     impl(provider).list_issues(owner, repo)
   end
 
-  @spec list_contributors(provider(), owner(), repo()) :: {:ok, [ContributorResponse.t()]} | {:error, error()}
+  @spec list_contributors(provider(), owner(), repo()) ::
+          {:ok, [ContributorResponse.t()]} | {:error, error()}
   def list_contributors(provider, owner, repo) do
-    impl(provider).list_issues(owner, repo)
+    impl(provider).list_contributors(owner, repo)
+  end
+
+  @spec get_user(provider(), login()) :: {:ok, UserResponse.t()} | {:error, error()}
+  def get_user(provider, login) do
+    impl(provider).get_user(login)
   end
 
   defp impl(:github) do
