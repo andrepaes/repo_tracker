@@ -7,5 +7,7 @@ defmodule RepoTracker.Repo.Migrations.CreateUsersTable do
       add :login, :string, null: false
       add :full_name, :string, null: false
     end
+
+    create index(:users, :login)
   end
 end
