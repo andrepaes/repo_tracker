@@ -10,14 +10,9 @@ defmodule RepoTracker.Application do
     children = [
       # Start the Ecto repository
       RepoTracker.Repo,
-      # Start the Telemetry supervisor
-      RepoTrackerWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: RepoTracker.PubSub},
       # Start the Endpoint (http/https)
-      RepoTrackerWeb.Endpoint
-      # Start a worker by calling: RepoTracker.Worker.start_link(arg)
-      # {RepoTracker.Worker, arg}
+      RepoTrackerWeb.Endpoint,
+      {Oban, Application.fetch_env!(:repo_tracker, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
