@@ -18,6 +18,11 @@ config :repo_tracker, RepoTrackerWeb.Endpoint,
   pubsub_server: RepoTracker.PubSub,
   live_view: [signing_salt: "/A/jGmeQ"]
 
+config :repo_tracker, Oban,
+  repo: RepoTracker.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
