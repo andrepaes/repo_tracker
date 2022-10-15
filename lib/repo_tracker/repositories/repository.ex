@@ -9,7 +9,8 @@ defmodule RepoTracker.Repositories.Repository do
 
   alias RepoTracker.Users.User
 
-  @fields [:login, :full_name]
+  @fields [:repo_name, :owner, :issues, :contributors]
+  @required_fields [:repo_name, :owner_id]
 
   @primary_key false
   schema "repositories" do
@@ -29,6 +30,6 @@ defmodule RepoTracker.Repositories.Repository do
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @fields)
-    |> validate_required(@fields)
+    |> validate_required(@required_fields)
   end
 end
