@@ -9,6 +9,7 @@ defmodule RepoTracker.Users.User do
 
   @fields [:login, :full_name]
 
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "users" do
     field :login, :string
     field :full_name, :string
