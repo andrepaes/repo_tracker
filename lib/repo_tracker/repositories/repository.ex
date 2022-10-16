@@ -12,11 +12,9 @@ defmodule RepoTracker.Repositories.Repository do
   @fields [:repo_name, :owner, :issues, :contributors]
   @required_fields [:repo_name, :owner_id]
 
-  @primary_key false
   schema "repositories" do
-    # primary key
-    field :repo_name, :string, primary_key: true
-    belongs_to :owner_id, User, primary_key: true
+    field :repo_name, :string
+    belongs_to :owner_id, User
 
     embeds_many :issues, Issues, on_replace: :delete do
       field :title, :string
@@ -24,12 +22,15 @@ defmodule RepoTracker.Repositories.Repository do
       field :labels, {:array, :string}
     end
 
-    many_to_many :contributors, User, join_through: :repository_contributors
+    many_to_many :contributors, User,
+      join_keys: [repository_id: :id, contributor_id: :id],
+      join_through: "repository_contributors"
   end
 
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @fields)
     |> validate_required(@required_fields)
+    |> cast_assoc(:contributors)
   end
 end
