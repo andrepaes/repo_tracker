@@ -4,7 +4,6 @@ defmodule RepoTracker.Providers do
   """
 
   @type repo :: String.t()
-  @type owner :: String.t()
   @type login :: String.t()
   @type provider :: :github
   @type error :: %{message: String.t(), code: non_neg_integer()}
@@ -27,15 +26,15 @@ defmodule RepoTracker.Providers do
     end
   end
 
-  @spec list_issues(provider(), owner(), repo()) :: {:ok, [IssueResponse.t()]} | {:error, error()}
-  def list_issues(provider, owner, repo) do
-    impl(provider).list_issues(owner, repo)
+  @spec list_issues(provider(), login(), repo()) :: {:ok, [IssueResponse.t()]} | {:error, error()}
+  def list_issues(provider, login, repo) do
+    impl(provider).list_issues(login, repo)
   end
 
-  @spec list_contributors(provider(), owner(), repo()) ::
+  @spec list_contributors(provider(), login(), repo()) ::
           {:ok, [ContributorResponse.t()]} | {:error, error()}
-  def list_contributors(provider, owner, repo) do
-    impl(provider).list_contributors(owner, repo)
+  def list_contributors(provider, login, repo) do
+    impl(provider).list_contributors(login, repo)
   end
 
   @spec get_user(provider(), login()) :: {:ok, UserResponse.t()} | {:error, error()}
@@ -43,7 +42,7 @@ defmodule RepoTracker.Providers do
     impl(provider).get_user(login)
   end
 
-  defp impl(:github) do
-    GithubImpl
+  defp impl(provider) do
+    Application.get_env(:repo_tracker, :providers, %{github: GithubImpl})[provider]
   end
 end

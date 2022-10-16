@@ -42,7 +42,9 @@ defmodule RepoTracker.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:tentacat, "~> 2.0"},
-      {:oban, "~> 2.13"}
+      {:oban, "~> 2.13"},
+      {:mox, "~> 1.0", only: :test},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
