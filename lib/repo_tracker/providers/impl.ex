@@ -8,10 +8,10 @@ defmodule RepoTracker.Providers.Impl do
   alias RepoTracker.Providers.IssueResponse
   alias RepoTracker.Providers.UserResponse
 
-  @callback list_issues(Providers.owner(), Providers.repo()) ::
+  @callback list_issues(Providers.login(), Providers.repo()) ::
               {:ok, [IssueResponse.t()]} | {:error, Providers.error()}
 
-  @callback list_contributors(Providers.owner(), Providers.repo()) ::
+  @callback list_contributors(Providers.login(), Providers.repo()) ::
               {:ok, [ContributorResponse.t()]} | {:error, Providers.error()}
 
   @callback get_user(Providers.login()) ::

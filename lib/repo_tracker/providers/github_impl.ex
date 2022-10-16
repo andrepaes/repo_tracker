@@ -7,13 +7,17 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   require Logger
 
+  alias Tentacat.Issues
+  alias Tentacat.Repositories.Contributors
+  alias Tentacat.Users
+
   alias RepoTracker.Providers.ContributorResponse
   alias RepoTracker.Providers.IssueResponse
   alias RepoTracker.Providers.UserResponse
 
   @impl true
   def list_issues(owner, repo) do
-    case Tentacat.Issues.list(owner, repo) do
+    case Issues.list(owner, repo) do
       {200, issues, _resp_headers} ->
         {:ok, Enum.map(issues, &apply_issue_response/1)}
 
@@ -28,7 +32,7 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   @impl true
   def list_contributors(owner, repo) do
-    case Tentacat.Repositories.Contributors.list(owner, repo) do
+    case Contributors.list(owner, repo) do
       {200, contributors, _resp_headers} ->
         {:ok, Enum.map(contributors, &apply_contributor_response/1)}
 
@@ -43,7 +47,7 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   @impl true
   def get_user(login) do
-    case Tentacat.Users.find(login) do
+    case Users.find(login) do
       {200, user, _resp_headers} ->
         {:ok, apply_user_response(user)}
 
