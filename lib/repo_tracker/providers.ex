@@ -3,6 +3,11 @@ defmodule RepoTracker.Providers do
   This module defines an api to interact with any repository on any integrated provider
   """
 
+  alias RepoTracker.Providers.ContributorResponse
+  alias RepoTracker.Providers.IssueResponse
+  alias RepoTracker.Providers.UserResponse
+  alias RepoTracker.Providers.GithubImpl
+
   @type repo :: String.t()
   @type login :: String.t()
   @type provider :: :github
@@ -12,12 +17,7 @@ defmodule RepoTracker.Providers do
           required(:contributors) => [ContributorResponse.t()]
         }
 
-  alias RepoTracker.Providers.ContributorResponse
-  alias RepoTracker.Providers.IssueResponse
-  alias RepoTracker.Providers.UserResponse
-  alias RepoTracker.Providers.GithubImpl
-
-  @spec fetch_repo_info(Providers.provider(), Providers.login(), Providers.repo()) ::
+  @spec fetch_repo_info(provider(), login(), repo()) ::
           {:ok, repo_info()} | {:error, error()}
   def fetch_repo_info(provider, login, repo_name) do
     with {:ok, issues} <- list_issues(provider, login, repo_name),
