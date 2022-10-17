@@ -76,7 +76,7 @@ defmodule RepoTracker.Providers.GithubImpl do
     %UserResponse{name: name}
   end
 
-  defp client() do
+  defp client do
     Tentacat.Client.new(%{access_token: "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"})
   end
 end

@@ -36,4 +36,3 @@ defmodule RepoTracker.Repositories.Repository do
     |> validate_required(@required_fields)
   end
 end
-

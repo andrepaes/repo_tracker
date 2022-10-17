@@ -4,9 +4,9 @@ defmodule RepoTracker.Providers do
   """
 
   alias RepoTracker.Providers.ContributorResponse
+  alias RepoTracker.Providers.GithubImpl
   alias RepoTracker.Providers.IssueResponse
   alias RepoTracker.Providers.UserResponse
-  alias RepoTracker.Providers.GithubImpl
 
   @type repo :: String.t()
   @type login :: String.t()

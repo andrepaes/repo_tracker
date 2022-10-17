@@ -44,7 +44,8 @@ defmodule RepoTracker.MixProject do
       {:tentacat, "~> 2.0"},
       {:oban, "~> 2.13"},
       {:mox, "~> 1.0", only: :test},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 

@@ -1,11 +1,14 @@
 defmodule RepoTracker.Workers.RepoFetcher do
+  @moduledoc """
+  Worker responsible for fetch de general repo information as issues and contributors
+  """
   use Oban.Worker
 
-  alias RepoTracker.Providers
-  alias RepoTracker.Users.User
-  alias RepoTracker.Repositories.Repository
   alias RepoTracker.Contribution
+  alias RepoTracker.Providers
   alias RepoTracker.Repo
+  alias RepoTracker.Repositories.Repository
+  alias RepoTracker.Users.User
 
   alias Ecto.Multi
 
