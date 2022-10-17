@@ -6,13 +6,12 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
 
   alias RepoTracker.Workers.RepoFetcher
 
+  alias RepoTracker.Contribution
   alias RepoTracker.Providers.ContributorResponse
   alias RepoTracker.Providers.IssueResponse
-
-  alias RepoTracker.Users.User
-  alias RepoTracker.Repositories.Repository
-  alias RepoTracker.Contribution
   alias RepoTracker.Repo
+  alias RepoTracker.Repositories.Repository
+  alias RepoTracker.Users.User
 
   describe "perform/1" do
     test "when repo exists" do

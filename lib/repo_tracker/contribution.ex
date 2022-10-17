@@ -7,8 +7,9 @@ defmodule RepoTracker.Contribution do
 
   import Ecto.Changeset
 
-  alias RepoTracker.Users.User
   alias RepoTracker.Repositories.Repository
+  alias RepoTracker.Users.User
+
   @fields [:commits_quantity, :repository_id, :contributor_id]
 
   schema "contributions" do
