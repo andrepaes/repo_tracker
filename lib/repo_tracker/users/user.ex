@@ -15,9 +15,9 @@ defmodule RepoTracker.Users.User do
     field :full_name, :string
   end
 
-  def changeset(params) do
-    %__MODULE__{}
+  def changeset(schema \\ %__MODULE__{}, params) do
+    schema
     |> cast(params, @fields)
-    |> validate_required(@fields)
+    |> validate_required([:login])
   end
 end

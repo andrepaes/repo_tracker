@@ -17,7 +17,7 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   @impl true
   def list_issues(owner, repo) do
-    case Issues.list(owner, repo) do
+    case Issues.list(client(), owner, repo) do
       {200, issues, _resp_headers} ->
         {:ok, Enum.map(issues, &apply_issue_response/1)}
 
@@ -32,7 +32,7 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   @impl true
   def list_contributors(owner, repo) do
-    case Contributors.list(owner, repo) do
+    case Contributors.list(client(), owner, repo) do
       {200, contributors, _resp_headers} ->
         {:ok, Enum.map(contributors, &apply_contributor_response/1)}
 
@@ -74,5 +74,9 @@ defmodule RepoTracker.Providers.GithubImpl do
 
   defp apply_user_response(%{"name" => name}) do
     %UserResponse{name: name}
+  end
+
+  defp client() do
+    Tentacat.Client.new(%{access_token: "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"})
   end
 end

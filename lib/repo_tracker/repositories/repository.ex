@@ -9,12 +9,14 @@ defmodule RepoTracker.Repositories.Repository do
 
   alias RepoTracker.Users.User
 
-  @fields [:repo_name, :owner, :issues, :contributors]
+  @fields [:repo_name, :owner_id]
   @required_fields [:repo_name, :owner_id]
+  @issue_fields [:title, :author, :labels]
+  @foreign_key_type :binary_id
 
   schema "repositories" do
     field :repo_name, :string
-    belongs_to :owner_id, User
+    belongs_to :owner, User
 
     embeds_many :issues, Issues, on_replace: :delete do
       field :title, :string
@@ -24,13 +26,14 @@ defmodule RepoTracker.Repositories.Repository do
 
     many_to_many :contributors, User,
       join_keys: [repository_id: :id, contributor_id: :id],
-      join_through: "repository_contributors"
+      join_through: RepoTracker.Contribution
   end
 
-  def changeset(params) do
-    %__MODULE__{}
+  def changeset(schema \\ %__MODULE__{}, params) do
+    schema
     |> cast(params, @fields)
+    |> cast_embed(:issues, with: &cast(&1, &2, @issue_fields))
     |> validate_required(@required_fields)
-    |> cast_assoc(:contributors)
   end
 end
+

@@ -8,6 +8,6 @@ defmodule RepoTracker.Repo.Migrations.CreateUsersTable do
       add :full_name, :string, null: true
     end
 
-    create index(:users, :login)
+    create unique_index(:users, :login)
   end
 end
