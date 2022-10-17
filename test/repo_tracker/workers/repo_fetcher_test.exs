@@ -45,7 +45,11 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
              } = Repo.get(Repository, repo_id)
 
       assert [
-               %{repository_id: ^repo_id, contributor_id: ^contributor_id, commits_quantity: 400},
+               %{
+                 repository_id: ^repo_id,
+                 contributor_id: ^contributor_id,
+                 commits_quantity: 400
+               },
                %{
                  repository_id: ^repo_id,
                  contributor_id: ^contributor_1_id,
@@ -66,6 +70,10 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
       })
 
       assert [] == User |> order_by(asc: :login) |> Repo.all()
+
+      assert [] == Repo.all(Repository)
+
+      assert [] == Repo.all(Contribution)
     end
   end
 end
