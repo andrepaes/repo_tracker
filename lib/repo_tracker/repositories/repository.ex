@@ -11,7 +11,7 @@ defmodule RepoTracker.Repositories.Repository do
 
   @fields [:repo_name, :owner_id]
   @required_fields [:repo_name, :owner_id]
-  @issue_fields [:title, :author, :labels]
+  @issue_fields [:title, :login, :labels]
   @foreign_key_type :binary_id
 
   schema "repositories" do
@@ -20,7 +20,7 @@ defmodule RepoTracker.Repositories.Repository do
 
     embeds_many :issues, Issues, on_replace: :delete do
       field :title, :string
-      field :author, :string
+      field :login, :string
       field :labels, {:array, :string}
     end
 
