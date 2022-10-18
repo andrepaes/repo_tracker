@@ -108,7 +108,7 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
       assert %{
                issues: [
                  %{title: "Testing", login: "random_user_1", labels: ["test", "bug"]},
-%{title: "Enhancement", login: "random_user_2", labels: ["enhancement"]}
+                 %{title: "Enhancement", login: "random_user_2", labels: ["enhancement"]}
                ]
              } = Repo.get(Repository, repo_id)
 
