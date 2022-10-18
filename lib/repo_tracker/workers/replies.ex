@@ -1,4 +1,4 @@
-defmodule RepoTracker.Workers.RepliesWorker do
+defmodule RepoTracker.Workers.Replies do
   use Oban.Worker
 
   import Ecto.Query
