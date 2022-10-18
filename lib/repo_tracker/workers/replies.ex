@@ -63,13 +63,17 @@ defmodule RepoTracker.Workers.Replies do
         commits_quantity: commits_quantity,
         contributor: %{full_name: full_name, login: login}
       } ->
-        inspect({full_name, login, commits_quantity})
+        {full_name, login, commits_quantity}
+        |> Tuple.to_list()
+        |> Enum.join(",")
     end)
   end
 
   defp extract_issues(%{issues: issues}) do
     Enum.map(issues, fn %{title: title, login: login, labels: labels} ->
-      inspect({title, login, labels})
+      {title, login, labels}
+      |> Tuple.to_list()
+      |> Enum.join(",")
     end)
   end
 end

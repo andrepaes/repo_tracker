@@ -23,7 +23,10 @@ defmodule RepoTracker.Workers.RepliesTest do
         insert(:repository, %{
           repo_name: "testing",
           owner: owner,
-          issues: [%{title: "Testing", login: "random_user_1", labels: ["test", "bug"]}]
+          issues: [
+            %{title: "Testing", login: "random_user_1", labels: ["test", "bug"]},
+            %{title: "Testing2", login: "random_user_2", labels: ["enhancement"]}
+          ]
         })
 
       insert(:contribution, %{commits_quantity: 400, repository: repo, contributor: owner})
@@ -32,7 +35,7 @@ defmodule RepoTracker.Workers.RepliesTest do
 
     test "when repo exists", %{repo: repo, owner: owner} do
       expect(WebhookNotifiersMock, :notify, fn "google.com",
-                                               "{\"contributors\":[\"{\\\"Test 123\\\", \\\"andrepaes\\\", 400}\"],\"issues\":[\"{\\\"Testing\\\", \\\"random_user_1\\\", [\\\"test\\\", \\\"bug\\\"]}\"],\"repository\":\"testing\",\"user\":\"Test 123\"}" ->
+                                               "{\"contributors\":[\"Test 123,andrepaes,400\"],\"issues\":[\"Testing,random_user_1,testbug\",\"Testing2,random_user_2,enhancement\"],\"repository\":\"testing\",\"user\":\"Test 123\"}" ->
         {:ok, %{status_code: 200}}
       end)
 
