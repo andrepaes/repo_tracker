@@ -21,8 +21,7 @@ defmodule RepoTracker.Workers.RepliesWorker do
       contributors: extract_contributors(repo_info)
     }
 
-    a = HTTPoison.post(target, Jason.encode!(data_to_send))
-    Logger.error("#{inspect(a)}")
+    HTTPoison.post(target, Jason.encode!(data_to_send))
   end
 
   def fetch_repo_info(login, repo_name) do
