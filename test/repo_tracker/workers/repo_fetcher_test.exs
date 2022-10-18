@@ -11,6 +11,7 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
   alias RepoTracker.Contribution
   alias RepoTracker.Providers.ContributorResponse
   alias RepoTracker.Providers.IssueResponse
+  alias RepoTracker.Providers.UserResponse
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Users.User
@@ -73,6 +74,10 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
         })
 
       insert(:contribution, %{commits_quantity: 400, repository: repo, contributor: owner})
+
+      expect(GithubProvidersMock, :fetch_user, fn "contributor_1" ->
+        {:ok, %UserResponse{name: "Contributor_1"}}
+      end)
 
       expect(GithubProvidersMock, :list_issues, fn "andrepaes", "testing" ->
         {:ok,

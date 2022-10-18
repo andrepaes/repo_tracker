@@ -5,26 +5,42 @@ defmodule RepoTracker.Workers.Replies do
 
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Repo
+  alias RepoTracker.Notifiers
 
   require Logger
 
   @impl Oban.Worker
   def perform(%Oban.Job{
+        id: job_id,
         args: %{"target" => target, "owner_login" => login, "repo_name" => repo_name}
       }) do
-    case fetch_repo_info(login, repo_name) do
-      nil ->
-        HTTPoison.post(target, Jason.encode!(%{message: "Can't fetch repository information"}))
+    response =
+      case fetch_repo_info(login, repo_name) do
+        nil ->
+          Notifiers.notify(
+            :webhook,
+            target,
+            Jason.encode!(%{message: "Can't fetch repository information"})
+          )
 
-      repo_info ->
-        data_to_send = %{
-          user: repo_info.owner.full_name,
-          repository: repo_info.repo_name,
-          issues: extract_issues(repo_info),
-          contributors: extract_contributors(repo_info)
-        }
+        repo_info ->
+          data_to_send = %{
+            user: repo_info.owner.full_name,
+            repository: repo_info.repo_name,
+            issues: extract_issues(repo_info),
+            contributors: extract_contributors(repo_info)
+          }
 
-        HTTPoison.post(target, Jason.encode!(data_to_send))
+          Notifiers.notify(:webhook, target, Jason.encode!(data_to_send))
+      end
+
+    case response do
+      {:ok, %{reason: :nxdomain}} ->
+        Logger.error("Job #{inspect(job_id)} was skipped because: Target(#{target}) don't exists")
+        :ok
+
+      resp ->
+        resp
     end
   end
 
