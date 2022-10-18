@@ -1,4 +1,6 @@
 defmodule RepoTracker.Factory do
+  @moduledoc false
+
   # with Ecto
   use ExMachina.Ecto, repo: RepoTracker.Repo
 

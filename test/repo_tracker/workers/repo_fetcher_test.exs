@@ -121,7 +121,11 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
                  commits_quantity: 202
                }
              ] = Repo.all(Contribution)
-             assert [%{args: %{"login" => "contributor_1", "provider" => "github"}}, %{args: %{"login" => "andrepaes", "provider" => "github"}}] = all_enqueued(worker: UsersFetcher)
+
+      assert [
+               %{args: %{"login" => "contributor_1", "provider" => "github"}},
+               %{args: %{"login" => "andrepaes", "provider" => "github"}}
+             ] = all_enqueued(worker: UsersFetcher)
     end
 
     test "when repo don't exists" do

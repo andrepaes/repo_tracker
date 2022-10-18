@@ -5,8 +5,9 @@ defmodule RepoTracker.Repositories do
 
   alias RepoTracker.Repo
   alias RepoTracker.Providers
-  alias RepoTracker.Workers.RepoFetcher
   alias RepoTracker.Workers.Replies
+  alias RepoTracker.Workers.RepoFetcher
+
   alias Ecto.Multi
 
   @spec track_repository(

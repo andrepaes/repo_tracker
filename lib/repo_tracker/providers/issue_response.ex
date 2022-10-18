@@ -1,4 +1,6 @@
 defmodule RepoTracker.Providers.IssueResponse do
+  @moduledoc false
+
   @type t :: %{
           title: String.t(),
           login: String.t(),

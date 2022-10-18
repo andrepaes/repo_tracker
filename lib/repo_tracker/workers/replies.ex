@@ -1,11 +1,14 @@
 defmodule RepoTracker.Workers.Replies do
+  @moduledoc """
+  Worker responsible for get the info back to the user through webhook
+  """
   use Oban.Worker
 
   import Ecto.Query
 
-  alias RepoTracker.Repositories.Repository
-  alias RepoTracker.Repo
   alias RepoTracker.Notifiers
+  alias RepoTracker.Repo
+  alias RepoTracker.Repositories.Repository
 
   require Logger
 

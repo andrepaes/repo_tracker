@@ -14,6 +14,7 @@ defmodule RepoTracker.Workers.RepliesTest do
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Users.User
+  alias RepoTracker.Workers.Replies
 
   describe "perform/1" do
     setup do
@@ -40,7 +41,7 @@ defmodule RepoTracker.Workers.RepliesTest do
       end)
 
       {:ok, %{status_code: 200}} =
-        RepoTracker.Workers.Replies.perform(%Oban.Job{
+        Replies.perform(%Oban.Job{
           args: %{
             "target" => "google.com",
             "owner_login" => owner.login,
@@ -55,7 +56,7 @@ defmodule RepoTracker.Workers.RepliesTest do
       end)
 
       :ok =
-        RepoTracker.Workers.Replies.perform(%Oban.Job{
+        Replies.perform(%Oban.Job{
           args: %{
             "target" => "non_existent_url.com",
             "owner_login" => owner.login,

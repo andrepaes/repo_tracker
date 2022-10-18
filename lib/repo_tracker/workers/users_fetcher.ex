@@ -1,4 +1,7 @@
 defmodule RepoTracker.Workers.UsersFetcher do
+  @moduledoc """
+  Worker responsible for gathering specific user info
+  """
   use Oban.Worker
 
   alias RepoTracker.Providers

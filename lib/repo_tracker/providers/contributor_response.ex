@@ -1,4 +1,6 @@
 defmodule RepoTracker.Providers.ContributorResponse do
+  @moduledoc false
+
   @type t :: %{
           login: String.t(),
           commits_quantity: non_neg_integer(),
