@@ -15,6 +15,7 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Users.User
+  alias RepoTracker.Workers.UsersFetcher
 
   describe "perform/1" do
     test "when repo exists" do
@@ -75,10 +76,6 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
 
       insert(:contribution, %{commits_quantity: 400, repository: repo, contributor: owner})
 
-      expect(GithubProvidersMock, :fetch_user, fn "contributor_1" ->
-        {:ok, %UserResponse{name: "Contributor_1"}}
-      end)
-
       expect(GithubProvidersMock, :list_issues, fn "andrepaes", "testing" ->
         {:ok,
          [
@@ -124,6 +121,7 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
                  commits_quantity: 202
                }
              ] = Repo.all(Contribution)
+             assert [%{args: %{"login" => "contributor_1", "provider" => "github"}}, %{args: %{"login" => "andrepaes", "provider" => "github"}}] = all_enqueued(worker: UsersFetcher)
     end
 
     test "when repo don't exists" do
