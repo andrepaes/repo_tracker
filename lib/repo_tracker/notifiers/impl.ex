@@ -5,5 +5,5 @@ defmodule RepoTracker.Notifiers.Impl do
 
   alias RepoTracker.Notifiers
 
-  @callback notify(Notifiers.data(), Notifiers.target()) :: {:ok, any()} | {:error, any()}
+  @callback notify(Notifiers.target(), Notifiers.data()) :: {:ok, any()} | {:error, any()}
 end

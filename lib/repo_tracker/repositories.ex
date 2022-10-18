@@ -17,7 +17,7 @@ defmodule RepoTracker.Repositories do
           opts :: Keyword.t()
         ) :: :ok | {:error, Oban.Job.changeset() | term()}
   def track_repository(provider, owner, repo_name, webhook_target, opts \\ []) do
-    schedule_in = Keyword.get(opts, :schedule_in, {1, :second})
+    schedule_in = Keyword.get(opts, :schedule_in, {1, :day})
 
     repo_fetcher_job = RepoFetcher.new(%{provider: provider, login: owner, repo_name: repo_name})
 
