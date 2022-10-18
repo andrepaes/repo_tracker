@@ -28,7 +28,7 @@ defmodule RepoTracker.Workers.UsersTest do
                %{login: "andrepaes", full_name: "André Testing"}
              ] = User |> order_by(asc: :login) |> Repo.all()
     end
-     
+
     test "when user don't have a name on provider" do
       insert(:user, %{full_name: nil, login: "andrepaes"})
 
