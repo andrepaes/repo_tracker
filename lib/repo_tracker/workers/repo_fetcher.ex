@@ -46,6 +46,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
         :insert_repository,
         &insert_repository(&1, &2, issues, repo_name)
       )
+      |> Multi.run(:load_contributors, &load_contributors(&1, &2, all_contributors))
       |> Multi.run(:insert_contributions, &insert_contributions(&1, &2, all_contributors))
       |> Multi.run(:enqueue_users_fetcher, &enqueue_users_fetcher/2)
       |> Repo.transaction()
@@ -81,13 +82,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
     |> Repo.insert_or_update()
   end
 
-  defp insert_contributions(
-         _repo,
-         %{
-           insert_repository: %{id: repo_id}
-         },
-         all_contributors
-       ) do
+  defp load_contributors(_repo, _params, all_contributors) do
     logins = Map.keys(all_contributors)
 
     contributors =
@@ -95,9 +90,20 @@ defmodule RepoTracker.Workers.RepoFetcher do
       |> where([u], u.login in ^logins)
       |> Repo.all()
 
+    {:ok, contributors}
+  end
+
+  defp insert_contributions(
+         _repo,
+         %{
+           insert_repository: %{id: repo_id},
+           load_contributors: contributors
+         },
+         all_contributors_with_contribution
+       ) do
     contributions =
       Enum.map(contributors, fn %{id: contributor_id, login: login} ->
-        contribution = Map.fetch!(all_contributors, login)
+        contribution = Map.fetch!(all_contributors_with_contribution, login)
 
         %{
           contributor_id: contributor_id,
@@ -114,7 +120,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
   end
 
   defp enqueue_users_fetcher(_repo, %{
-         insert_contributors: {_quantity_of_contributors, contributors},
+         insert_contributors: {_quantity_of_new_contributors, contributors},
          insert_owner: owner
        }) do
     insertable_data =

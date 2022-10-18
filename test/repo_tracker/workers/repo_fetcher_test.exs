@@ -14,7 +14,6 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Users.User
-  alias RepoTracker.Workers.UsersFetcher
 
   describe "perform/1" do
     test "when repo exists" do
@@ -61,14 +60,10 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
                  commits_quantity: 202
                }
              ] = Repo.all(Contribution)
-
-      # only enqueue inserted contributors
-      assert [] = all_enqueued(worker: UsersFetcher)
     end
 
     test "updating already filled repository" do
       owner = insert(:user, %{login: "andrepaes"})
-      insert(:user, %{login: "contributor_1"})
 
       repo =
         insert(:repository, %{
@@ -124,9 +119,6 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
                  commits_quantity: 202
                }
              ] = Repo.all(Contribution)
-
-      # only enqueue inserted contributors
-      assert [] = all_enqueued(worker: UsersFetcher)
     end
 
     test "when repo don't exists" do
