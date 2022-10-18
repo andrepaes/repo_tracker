@@ -16,7 +16,8 @@ config :repo_tracker, RepoTrackerWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: RepoTrackerWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: RepoTracker.PubSub,
-  live_view: [signing_salt: "/A/jGmeQ"]
+  live_view: [signing_salt: "/A/jGmeQ"],
+  render_errors: [view: RepoTrackerWeb.ErrorView, accepts: ~w(json), layout: false]
 
 config :repo_tracker, Oban,
   repo: RepoTracker.Repo,
