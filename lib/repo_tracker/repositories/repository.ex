@@ -24,9 +24,7 @@ defmodule RepoTracker.Repositories.Repository do
       field :labels, {:array, :string}
     end
 
-    many_to_many :contributors, User,
-      join_keys: [repository_id: :id, contributor_id: :id],
-      join_through: RepoTracker.Contribution
+    has_many :contributions, RepoTracker.Contribution
   end
 
   def changeset(schema \\ %__MODULE__{}, params) do
