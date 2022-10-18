@@ -48,8 +48,8 @@ defmodule RepoTracker.Workers.Replies do
     query =
       from r in Repository,
         join: o in assoc(r, :owner),
-        join: c in assoc(r, :contributions),
-        join: co in assoc(c, :contributor),
+        left_join: c in assoc(r, :contributions),
+        left_join: co in assoc(c, :contributor),
         where: r.repo_name == ^repo_name,
         where: o.login == ^login,
         preload: [owner: o, contributions: {c, contributor: co}]

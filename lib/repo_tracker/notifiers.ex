@@ -1,5 +1,5 @@
 defmodule RepoTracker.Notifiers do
-  @defmodule """
+  @moduledoc """
   This module defines an api to send notifications
   """
 
@@ -9,8 +9,8 @@ defmodule RepoTracker.Notifiers do
 
   alias RepoTracker.Notifiers.WebhookImpl
 
-  @spec notify(channel(), data(), target()) :: {:ok, any()} | {:error, any()}
-  def notify(channel, data, target) do
+  @spec notify(channel(), target(), data()) :: {:ok, any()} | {:error, any()}
+  def notify(channel, target, data) do
     impl(channel).notify(data, target)
   end
 

@@ -1,5 +1,5 @@
 defmodule RepoTracker.Notifiers.WebhookImpl do
-  @defmodule """
+  @moduledoc """
   Module that implement the notifiers contract to webhooks
   """
 
