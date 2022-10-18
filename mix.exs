@@ -45,7 +45,8 @@ defmodule RepoTracker.MixProject do
       {:oban, "~> 2.13"},
       {:mox, "~> 1.0", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 

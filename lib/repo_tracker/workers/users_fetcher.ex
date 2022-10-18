@@ -27,6 +27,8 @@ defmodule RepoTracker.Workers.UsersFetcher do
         |> User.changeset(%{full_name: name})
         |> Repo.update()
 
+        :ok
+
       {:error, _} = error ->
         error
     end
