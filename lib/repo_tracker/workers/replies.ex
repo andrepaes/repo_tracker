@@ -12,16 +12,20 @@ defmodule RepoTracker.Workers.Replies do
   def perform(%Oban.Job{
         args: %{"target" => target, "owner_login" => login, "repo_name" => repo_name}
       }) do
-    repo_info = fetch_repo_info(login, repo_name)
+    case fetch_repo_info(login, repo_name) do
+      nil ->
+        HTTPoison.post(target, Jason.encode!(%{message: "Can't fetch repository information"}))
 
-    data_to_send = %{
-      user: repo_info.owner.full_name,
-      repository: repo_info.repo_name,
-      issues: extract_issues(repo_info),
-      contributors: extract_contributors(repo_info)
-    }
+      repo_info ->
+        data_to_send = %{
+          user: repo_info.owner.full_name,
+          repository: repo_info.repo_name,
+          issues: extract_issues(repo_info),
+          contributors: extract_contributors(repo_info)
+        }
 
-    HTTPoison.post(target, Jason.encode!(data_to_send))
+        HTTPoison.post(target, Jason.encode!(data_to_send))
+    end
   end
 
   def fetch_repo_info(login, repo_name) do
