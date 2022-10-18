@@ -20,7 +20,7 @@ config :repo_tracker, RepoTrackerWeb.Endpoint,
   secret_key_base: "rDUbSokG2elRJTyOdS67uAxlpHmbPka0hL8Tft7xX1DMolr1Z8TWVqeFpD2aGTDb",
   server: false
 
-config :repo_tracker, Oban, testing: :inline
+config :repo_tracker, Oban, testing: :disabled
 
 # Print only warnings and errors during test
 config :logger, level: :warn
