@@ -77,6 +77,12 @@ defmodule RepoTracker.Providers.GithubImpl do
   end
 
   defp client do
-    Tentacat.Client.new(%{access_token: "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"})
+    case Application.get_env(:repo_tracker, :github_api_key) do
+      {:ok, access_token} ->
+        Tentacat.Client.new(%{access_token: access_token})
+
+      _ ->
+        Tentacat.Client.new()
+    end
   end
 end

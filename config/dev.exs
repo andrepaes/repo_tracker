@@ -59,3 +59,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :repo_tracker, github_api_key: System.fetch_env("GITHUB_API_TOKEN")

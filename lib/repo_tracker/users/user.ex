@@ -12,7 +12,7 @@ defmodule RepoTracker.Users.User do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "users" do
     field :login, :string
-    field :full_name, :string
+    field :full_name, :string, default: nil
   end
 
   def changeset(schema \\ %__MODULE__{}, params) do
