@@ -47,8 +47,8 @@ defmodule RepoTracker.Workers.RepoFetcher do
       |> Multi.run(:insert_contributions, &insert_contributions(&1, &2, all_contributors))
       |> Multi.run(:enqueue_users_fetcher, &enqueue_users_fetcher/2)
       |> Repo.transaction()
-      |> IO.inspect
     end
+    :ok
   end
 
   defp insert_owner(_repo, _, login) do
