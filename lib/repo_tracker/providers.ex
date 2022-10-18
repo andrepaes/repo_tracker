@@ -37,9 +37,9 @@ defmodule RepoTracker.Providers do
     impl(provider).list_contributors(login, repo)
   end
 
-  @spec get_user(provider(), login()) :: {:ok, UserResponse.t()} | {:error, error()}
-  def get_user(provider, login) do
-    impl(provider).get_user(login)
+  @spec fetch_user(provider(), login()) :: {:ok, UserResponse.t()} | {:error, error()}
+  def fetch_user(provider, login) do
+    impl(provider).fetch_user(login)
   end
 
   defp impl(provider) do

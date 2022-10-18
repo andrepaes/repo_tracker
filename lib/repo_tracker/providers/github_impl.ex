@@ -46,8 +46,8 @@ defmodule RepoTracker.Providers.GithubImpl do
   end
 
   @impl true
-  def get_user(login) do
-    case Users.find(login) do
+  def fetch_user(login) do
+    case Users.find(client(), login) do
       {200, user, _resp_headers} ->
         {:ok, apply_user_response(user)}
 
@@ -77,6 +77,6 @@ defmodule RepoTracker.Providers.GithubImpl do
   end
 
   defp client do
-    Tentacat.Client.new(%{access_token: "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"})
+    Tentacat.Client.new(%{access_token: "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"})
   end
 end
