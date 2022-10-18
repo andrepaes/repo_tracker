@@ -14,6 +14,6 @@ defmodule RepoTracker.Providers.Impl do
   @callback list_contributors(Providers.login(), Providers.repo()) ::
               {:ok, [ContributorResponse.t()]} | {:error, Providers.error()}
 
-  @callback get_user(Providers.login()) ::
+  @callback fetch_user(Providers.login()) ::
               {:ok, [UserResponse.t()]} | {:error, Providers.error()}
 end

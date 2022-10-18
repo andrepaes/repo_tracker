@@ -9,6 +9,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository
   alias RepoTracker.Users.User
+  alias RepoTracker.Workers.UsersFetcher
 
   alias Ecto.Multi
 
@@ -25,7 +26,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
           Map.put(acc, login, remove_struct(contributor))
         end)
 
-      contributors_without_commits =
+      insertable_contributors =
         all_contributors
         |> Map.values()
         |> Enum.map(&Map.drop(&1, [:commits_quantity]))
@@ -35,7 +36,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
       |> Multi.insert_all(
         :insert_contributors,
         User,
-        contributors_without_commits,
+        insertable_contributors,
         on_conflict: :nothing,
         returning: true
       )
@@ -44,7 +45,9 @@ defmodule RepoTracker.Workers.RepoFetcher do
         &insert_repository(&1, &2, issues, repo_name)
       )
       |> Multi.run(:insert_contributions, &insert_contributions(&1, &2, all_contributors))
+      |> Multi.run(:enqueue_users_fetcher, &enqueue_users_fetcher/2)
       |> Repo.transaction()
+      |> IO.inspect
     end
   end
 
@@ -102,6 +105,15 @@ defmodule RepoTracker.Workers.RepoFetcher do
        on_conflict: {:replace, [:commits_quantity]},
        conflict_target: [:repository_id, :contributor_id]
      )}
+  end
+
+  defp enqueue_users_fetcher(_repo, %{insert_contributors: {_quantity_of_contributors, contributors}, insert_owner: owner}) do
+    insertable_data =
+      Enum.map([owner | contributors], fn contributor ->
+        UsersFetcher.new(%{login: contributor.login, provider: :github})
+      end)
+
+    {:ok, Oban.insert_all(insertable_data)}
   end
 
   defp remove_struct(list) when is_list(list) do
