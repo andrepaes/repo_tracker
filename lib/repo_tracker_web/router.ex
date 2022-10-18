@@ -7,5 +7,6 @@ defmodule RepoTrackerWeb.Router do
 
   scope "/api", RepoTrackerWeb do
     pipe_through :api
+    post "/repositories/track", RepositoriesController, :track
   end
 end
