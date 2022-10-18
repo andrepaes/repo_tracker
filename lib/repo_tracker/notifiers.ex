@@ -11,7 +11,7 @@ defmodule RepoTracker.Notifiers do
 
   @spec notify(channel(), target(), data()) :: {:ok, any()} | {:error, any()}
   def notify(channel, target, data) do
-    impl(channel).notify(data, target)
+    impl(channel).notify(target, data)
   end
 
   defp impl(channel) do

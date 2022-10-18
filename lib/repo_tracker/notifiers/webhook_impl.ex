@@ -6,7 +6,7 @@ defmodule RepoTracker.Notifiers.WebhookImpl do
   @behaviour RepoTracker.Notifiers.Impl
 
   @impl true
-  def notify(data, target) do
+  def notify(target, data) do
     HTTPoison.post(target, data)
   end
 end
