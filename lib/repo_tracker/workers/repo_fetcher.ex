@@ -4,6 +4,8 @@ defmodule RepoTracker.Workers.RepoFetcher do
   """
   use Oban.Worker
 
+  import Ecto.Query
+
   alias RepoTracker.Contribution
   alias RepoTracker.Providers
   alias RepoTracker.Repo
@@ -48,7 +50,6 @@ defmodule RepoTracker.Workers.RepoFetcher do
       |> Multi.run(:enqueue_users_fetcher, &enqueue_users_fetcher/2)
       |> Repo.transaction()
     end
-    :ok
   end
 
   defp insert_owner(_repo, _, login) do
@@ -83,14 +84,19 @@ defmodule RepoTracker.Workers.RepoFetcher do
   defp insert_contributions(
          _repo,
          %{
-           insert_contributors: {_contributors_quantity, contributors},
-           insert_owner: owner,
            insert_repository: %{id: repo_id}
          },
          all_contributors
        ) do
+    logins = Map.keys(all_contributors)
+
+    contributors =
+      User
+      |> where([u], u.login in ^logins)
+      |> Repo.all()
+
     contributions =
-      Enum.map([owner | contributors], fn %{id: contributor_id, login: login} ->
+      Enum.map(contributors, fn %{id: contributor_id, login: login} ->
         contribution = Map.fetch!(all_contributors, login)
 
         %{
@@ -107,7 +113,10 @@ defmodule RepoTracker.Workers.RepoFetcher do
      )}
   end
 
-  defp enqueue_users_fetcher(_repo, %{insert_contributors: {_quantity_of_contributors, contributors}, insert_owner: owner}) do
+  defp enqueue_users_fetcher(_repo, %{
+         insert_contributors: {_quantity_of_contributors, contributors},
+         insert_owner: owner
+       }) do
     insertable_data =
       Enum.map([owner | contributors], fn contributor ->
         UsersFetcher.new(%{login: contributor.login, provider: :github})
