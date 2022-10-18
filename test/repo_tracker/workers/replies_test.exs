@@ -47,14 +47,14 @@ defmodule RepoTracker.Workers.RepliesTest do
     end
 
     test "when repo don't exists", %{repo: repo, owner: owner} do
-      expect(WebhookNotifiersMock, :notify, fn "non_existent_url", _ ->
+      expect(WebhookNotifiersMock, :notify, fn "non_existent_url.com", _ ->
         {:ok, %{reason: :nxdomain}}
       end)
 
-      {:ok, %{status_code: 200}} =
+      :ok =
         RepoTracker.Workers.Replies.perform(%Oban.Job{
           args: %{
-            "target" => "google.com",
+            "target" => "non_existent_url.com",
             "owner_login" => owner.login,
             "repo_name" => repo.repo_name
           }
