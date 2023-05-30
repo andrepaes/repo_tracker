@@ -8,7 +8,7 @@ defmodule RepoTracker.Workers.RepoFetcherTest do
 
   alias RepoTracker.Workers.RepoFetcher
 
-  alias RepoTracker.Contribution
+  alias RepoTracker.Repositories.Contribution
   alias RepoTracker.Providers.ContributorResponse
   alias RepoTracker.Providers.IssueResponse
   alias RepoTracker.Providers.UserResponse

@@ -6,7 +6,7 @@ defmodule RepoTracker.Workers.RepoFetcher do
 
   import Ecto.Query
 
-  alias RepoTracker.Contribution
+  alias RepoTracker.Repositories.Contribution
   alias RepoTracker.Providers
   alias RepoTracker.Repo
   alias RepoTracker.Repositories.Repository

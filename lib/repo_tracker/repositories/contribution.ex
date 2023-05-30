@@ -1,4 +1,4 @@
-defmodule RepoTracker.Contribution do
+defmodule RepoTracker.Repositories.Contribution do
   @moduledoc """
   This module represents a contribution on a repository
   """

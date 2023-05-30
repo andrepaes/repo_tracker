@@ -19,7 +19,7 @@ defmodule RepoTracker.Factory do
   end
 
   def contribution_factory do
-    %RepoTracker.Contribution{
+    %RepoTracker.Repositories.Contribution{
       commits_quantity: 100,
       repository: build(:repository),
       contributor: build(:user)

@@ -24,7 +24,7 @@ defmodule RepoTracker.Repositories.Repository do
       field :labels, {:array, :string}
     end
 
-    has_many :contributions, RepoTracker.Contribution
+    has_many :contributions, RepoTracker.Repositories.Contribution
   end
 
   def changeset(schema \\ %__MODULE__{}, params) do
